@@ -1,0 +1,162 @@
+-----------------------------------------------------------------------------------
+
+Les répertoires d'Unix/Linux possèdent une entrée par fichier. Chaque
+entrée possède le nom du fichier et le numéro de l'i-noeud. Le système
+Unix/Linux offre des appels système Posix pour manipuler les répertoires :
+
+. mkdir() créer un répertoire.
+. rmdir() supprimer un répertoire vide.
+. opendir() ouvrir un répertoire.
+. closedir() fermer un répertoire.
+. readdir() lire les entrées d'un répertoire.
+. link() créer une entrée dans un répertoire.
+. unlink() effacer une entrée d'un répertoire.
+. chdir() changer de répertoire de travail.
+. rename() renommer un répertoire.
+. getcwd() obtenir le nom du répertoire actuel.
+
+----------------------------------------------------------------------------------
+
+Ouverture :
+#include <sys/types.h>
+#include <dirent.h>
+DIR *opendir(char *pathname);
+Il retourne un pointeur du type DIR pour l'utiliser en readdir() ou closedir() ou
+Ouvrir un répertoires
+bien NULL s'il a eu une erreur
+
+----------------------------------------------------------------------------------
+
+Lecture d’un répertoires
+
+#include <sys/types.h>
+#include <dirent.h>
+
+struct dirent *readdir(DIR *dirp); // == > lit une entrée du répertoire
+
+Avec : dirp pointeur retourné par opendir()
+
+struct dirent 
+{
+	ino_t d_ino; /* numero de l'inode */
+	char d_name[]; /* nom du fichier */
+	..
+}
+
+#include <stdio.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <stdlib.h>
+
+int main(int argc, char**argv)
+{
+	DIR *dir;
+	struct dirent *ent; int i;
+	for (i=1 ; i<argc ; i++)
+	{
+		dir = opendir(argv[i]);
+		if (dir==NULL)
+		{
+			fprintf(" err open %s\(\backslash\)n", argv[i]);
+			exit(1);
+		}
+		else
+			printf("rep %s ouvert\n", argv[i]);
+		while ((ent=readdir(dir)) != NULL)
+			printf("%s ", ent->d_name);
+		close(dir);
+	}
+	return 0;
+}
+
+----------------------------------------------------------------------------------
+
+Ouverture de fichier :
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int open(const char *ref, int mode_ouv, int perm )
+
+O_RDONLY : ouverture pour lecture
+O_WRONLY : ouverture pour écriture
+O_RDWR : ouverture pour lecture et écritures
+O_APPEND : écriture à la fin du fichier
+O_CREAT : ouverture avec création de fichier
+O_TRUNC : ouverture avec remise à zéro du contenu du fichier
+
+NB : Le paramètre permission n’a de sens qu’`a la création du fichier, il permet de
+positionner les valeurs du champ mode de l’i-node.
+
+Exemple 1: créer un fichier, puis l’ouvrir pour un accès en lecture/écriture.
+
+int fd;
+fd = open(“file1", O_CREAT | O_RDWR, 0600);
+Avec :
+fd : le descripteur de fichier
+0600 : droits d’accès (ou code de protection du fichier )
+équivalent à wr-----
+
+Exemple 2: ouvrir le fichier file1 en mode écriture et positionne le pointeur à la fin du fichier
+
+int fd;
+fd = open("file1", O_WRONLY | O_APPEND);
+== > Ces écritures ajouteront des données à la fin du fichier.
+
+----------------------------------------------------------------------------------
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+echo :
+
+1-> http://www.gnu.org/software/coreutils/manual/html_node/echo-invocation.html#echo-invocation
+2-> https://www.tecmint.com/echo-command-in-linux/#:~:text=echo%20is%20one%20of%20the,standard%20output%20or%20a%20file.&text=2.,and%20assign%20its%20value%3D10.
+
+
+cd : relative or absolute path [. or .. for relative path and / for absolute]
+
+1-> Returns 0 if the directory is changed, non-zero otherwise.
+2-> chdir() [C function] pour changer de répertoire de travail.
+3-> cd = cd ~ = cd $HOME 
+4-> https://www.geeksforgeeks.org/cd-command-in-linux-with-examples/
+5-> [ cd my\ photos ] /* '\' makes that space after it protected == cd "my photos" */
+6-> [ cd - ] : change to the previous directory
+7-> [ cd .. ] : change dir to the parent dir
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+pwd:
+
+ 1 _______________________________________________________________________________________________
+|																								  |
+|		Obtenir le répertoire de travail :														  |
+|		En shell :																				  |	
+|		pwd																						  |
+|		En C :																					  |
+|		#include<unistd.h>																		  |
+|		char getcwd( char *buf, size_t size);													  |
+|		Obtenir le répertoire de travail														  |
+|		1er argument : un pointeur vers le tampon devant recevoir le							  |
+|		chemin absolu du répertoire																  |
+|		2eme argument : taille de ce tampon														  |
+|		Exemple :																				  |
+|		…																						  |
+|		if(!getcwd(buf, sizeof(buf))															  |
+|		{															  							  |
+|			perror("getcwd");																	  |
+|			exit(1);																			  |
+|		}																						  |
+|		else 																					  |
+|			printf("position actuelle : %s \n", buf);											  |
+|		 																						  |
+|_________________________________________________________________________________________________|
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+export :
+
+1-> https://www.geeksforgeeks.org/export-command-in-linux-with-examples/
+2-> https://www.youtube.com/watch?v=xP2vbb46IyM
+3-> 

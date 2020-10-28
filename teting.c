@@ -6,9 +6,17 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 11:38:41 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/27 13:31:46 by yslati           ###   ########.fr       */
+/*   Updated: 2020/10/28 14:06:28 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+# include <stdio.h>
+#include <string.h>
+# include <stdlib.h>
+#include <errno.h>
+# include <fcntl.h>
+#include  <dirent.h>
+#include "libft/libft.h"
 
 /*
 
@@ -28,13 +36,43 @@ YP  YP  YP    d88888P       YP      YP   YP    VP   V8P
 
 */
 
-//#include "includes/minishell.h"
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <fcntl.h>
-#include  <dirent.h>
-#include "libft/libft.h"
+int				arrlen(char **arr)
+{
+	int 	i;
+	
+	i = 0;
+	if (arr)
+	{
+		while (arr[i] != NULL)
+			i++;
+	}
+	return (i);
+}
+
+char			**arrdup(char **arr)
+{
+	char 	**ret;
+	int 	len;
+	int 	i;
+
+	i = -1;
+	len = arrlen(arr);
+	if (!(ret = (char **)malloc(sizeof(char *) * (len + 1))))
+		return (NULL);
+	while (++i < len)
+		ret[i] = ft_strdup(arr[i]);
+	ret[i] = NULL;
+	return (ret);
+}
+
+void			ft_err_msg(char *cmd, int err, char *arg)
+{
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(err), 2);
+}
 
 int main(int ac, char **av, char **env)
 {
@@ -43,7 +81,32 @@ int main(int ac, char **av, char **env)
 	chdir(av[1]);
 	printf("%s\n", getcwd(NULL, 0)); */
 	
+/*===================== ENV =======================*/
+
+
+	int		i = 0;
+	int		err = 2;
+	/* if (env)
+	{
+		if (av[1] == NULL)
+		{
+			while (env[i] != NULL)
+			{
+				ft_putendl_fd(env[i], 1);
+				i++;
+			}
+		}
+		else if (av[1])
+			ft_err_msg(av[0], err, av[1]);
+	} */
 	
+	char **arr;
+	arr = arrdup(env);
+	while (arr[i] != NULL)
+	{
+		ft_putendl_fd(arr[i], 1);
+		i++;
+	}
 	
 	return (0);
 }

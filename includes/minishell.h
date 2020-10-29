@@ -63,6 +63,7 @@ void				ft_cmd(t_ms *ms);
 void				init(t_ms *ms, char step);
 void				parse_in(t_ms *ms);
 int					char_counter(char *s, char c);
+char				**ft_split_ig(char const *s, char c);
 void				print_tab(char **tab);
 
 #endif

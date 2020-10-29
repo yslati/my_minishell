@@ -3,25 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_ig.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/08 22:07:02 by obouykou          #+#    #+#             */
-/*   Updated: 2020/10/29 09:28:52 by yslati           ###   ########.fr       */
+/*   Created: 2020/10/29 12:58:28 by obouykou          #+#    #+#             */
+/*   Updated: 2020/10/29 12:58:31 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*quote_handler(char const *s)
+int		quote_handler(char const *s)
 {
 	char	quote;
+	int		i;
 
-	quote = *s++;
-	while (*s && *s != quote)
-		s++;
-	if (!*s)
-		return (NULL);
-	return (s);
+	i = 1;
+	quote = s[0];
+	while (s[i] && s[i] != quote)
+		i++;
+	if (!s[i])
+		return (i - 1);
+	return (i);
 }
 
 int		ft_words(char const *s, char c)
@@ -34,29 +36,12 @@ int		ft_words(char const *s, char c)
 	while (*s)
 	{
 		if (*s == '\'' | *s == '"')
-		{
-			s = quote_handler(s);
-		}
-		if (*s && (*s == c && *(s + 1) != c) || *(s + 1) == '\0')
+			s += quote_handler(s);
+		if ((*s == c && *(s + 1) != c) || *(s + 1) == '\0')
 			len++;
 		s++;
 	}
 	return (len);
-}
-
-int		ft_len_elem(char const *s, char c)
-{
-	int		i;
-	int		size;
-
-	i = 0;
-	size = 0;
-	while (s[i] != '\0' && s[i] != c)
-	{
-		i++;
-		size++;
-	}
-	return (size);
 }
 
 char	**ft_exception(char const *s)
@@ -86,10 +71,56 @@ char	**free_everything(char **tab, int count)
 	return (NULL);
 }
 
-char	**ft_split(char const *s, char c)
+int		ft_len_elem(char const *s, char c)
+{
+	int		i;
+	int		size;
+	int		ret;
+
+	i = -1;
+	size = 0;
+	while (s[++i] && s[i] != c)
+	{
+		if (s[i] == '\'' | s[i] == '"')
+		{
+			ret = quote_handler(s + i);
+			size += ret;
+			i += ret;
+		}
+		if (s[i] != c)
+			size++;
+	}
+	return (size);
+}
+
+char	*fill_elem(char *elem, char *s, char c)
+{
+	int		i;
+	char	quote;
+
+	i = 0;
+	while (*s && *s != c)
+	{
+		quote = 0;
+		if (*s == '\'' | *s == '"')
+		{
+			quote = *s;
+			elem[i++] = *s++;
+			while (*s && *s != quote)
+				elem[i++] = *s++;
+			if (*s)
+				elem[i++] = *s++;
+		}
+		if (*s && !quote)
+			elem[i++] = *s++;
+	}
+	elem[i] = '\0';
+	return (s);
+}
+
+char	**ft_split_ig(char const *s, char c)
 {
 	char	**tab;
-	int		i;
 	int		j;
 	int		l;
 
@@ -106,10 +137,7 @@ char	**ft_split(char const *s, char c)
 			s++;
 		if (!(tab[j] = (char *)malloc((ft_len_elem(s, c) + 1) * sizeof(char))))
 			return (free_everything(tab, l));
-		i = 0;
-		while (*s && *s != c)
-			tab[j][i++] = *s++;
-		tab[j++][i] = '\0';
+		s = fill_elem(tab[j++], (char *)s, c);
 	}
 	return (tab);
 }

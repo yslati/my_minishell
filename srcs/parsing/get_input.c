@@ -33,7 +33,7 @@ void		parse_in(t_ms *ms)
 	n = read(0, ms->input, SIZE);
 	ms->input[n - 1] = 0;
 	test_input(ms, ms->input);
-	if ((ms->tab = ft_split(ms->input, ' ')) == NULL)
+	if ((ms->tab = ft_split_ig(ms->input, ' ')) == NULL)
 	{
 		ft_putendl_fd("Error : splitting error !", 1);
 		exit(1);

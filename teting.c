@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 11:38:41 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/29 12:44:05 by yslati           ###   ########.fr       */
+/*   Updated: 2020/10/29 14:35:18 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int		ft_isprint(int c)
 /* int			my_strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && *s2 && )
-
 } */
 
 int			get_env(char **env, char *var)
@@ -221,18 +220,12 @@ int main(int ac, char **av, char **env)
 		i = get_env(env, "HOME");
 		chdir(env[i] + 5);
 	}
-	
 	else if (!strcmp(path, "-"))
 	{
 		if ((i = get_env(env, "OLDPWD")) != -1)
-		{
 			chdir(env[i] + 7);
-		}
 		else
-			printf("cd: OLDPWD not set\n");
-		// if OLDPWD not set
-		// return error;
-		
+			printf("cd: OLDPWD not set\n");		
 	}
 	else if (path != NULL)
 	{
@@ -242,7 +235,11 @@ int main(int ac, char **av, char **env)
 	arr = set_env("OLDPWD", pwd, arr);
 	pwd = getcwd(NULL, 0);
 	arr = set_env("PWD", pwd, arr);
-	//if (!strcmp(av[1], "env"))
+	puts("here");
+	if (!(ft_strcmp(av[1], "env")))
+	{
+		puts("jjjj");
 		ft_print_env(arr);
+	}
 	return (0);
 }

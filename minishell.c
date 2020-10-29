@@ -16,24 +16,21 @@ void		minishell(char **env)
 {
 	t_ms ms;
 
-	//parse(av);
-	env[0] = NULL;
+	env[tb_len(env) - 1] = NULL;
+	init(&ms, 0);
 	while (1)
 	{
-		init(&ms);
+		init(&ms, 1);
 		ft_putstr_fd("$minishell$~> ", 1);
-		get_input(&ms);
-		ft_cmd(&ms);
+		parse_in(&ms);
+		//ft_cmd(&ms);
 	}
 }
 
 int		main(int ac,char **av, char **env)
 {
-	if (ac && av[0])
-	{
-		print_tab(env);
-	}
-	exit(0);
+	ac = 0;
+	av = NULL;
 	minishell(env);
 	return(0);
 }

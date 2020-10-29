@@ -21,16 +21,22 @@ void		print_tab(char **tab)
 		printf("TAB[%d] = |%s|\n", i, tab[i]);
 }
 
-void		get_input(t_ms *ms)
+void		test_input(t_ms *ms, char *in)
+{
+	ms->pp_count = char_counter(in, '|');
+}
+
+void		parse_in(t_ms *ms)
 {
 	int n;
 	
 	n = read(0, ms->input, SIZE);
 	ms->input[n - 1] = 0;
+	test_input(ms, ms->input);
 	if ((ms->tab = ft_split(ms->input, ' ')) == NULL)
 	{
-		ft_putendl_fd("Error : spliting error !", 1);
+		ft_putendl_fd("Error : splitting error !", 1);
 		exit(1);
 	}
-	//print_tab(ms->tab);
+	print_tab(ms->tab);
 }

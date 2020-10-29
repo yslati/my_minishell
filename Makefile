@@ -32,7 +32,7 @@ FLAGS = -Wextra -Werror -Wall
 all: $(NAME)
 
 $(NAME): $(OBJECT) $(HEADER)
-	@cd ./libft && make re && make clean
+	@cd ./libft && make re
 	@ar -rcs $(LIB) $(OBJECT_AR)
 	@gcc  $(FLAGS) $(MS_MAIN) $(LIBFT) $(LIB) -o $(NAME)
 	@echo "\n\033[32m------- Minishell has been created successfully -------\033[0m\n"
@@ -43,6 +43,7 @@ bonus: all
 	@gcc -c $< $(FLAGS)
 
 clean:
+	@cd ./libft && make clean
 	@rm -rf $(OBJECT_AR) $(LIB) $(LIBFT)
 	@echo "\n\033[36mCleaning objects Done!\033[0m\n"
 

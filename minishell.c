@@ -21,7 +21,7 @@ void		minishell(char **env)
 	while (1)
 	{
 		init(&ms, 1);
-		ft_putstr_fd("$minishell$~> ", 1);
+		ft_putstr_fd("\n$minishell$~> ", 1);
 		parse_in(&ms);
 		//ft_cmd(&ms);
 	}

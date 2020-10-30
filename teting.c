@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 11:38:41 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/29 14:35:18 by yslati           ###   ########.fr       */
+/*   Updated: 2020/10/30 11:27:46 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ YP   YD   `Y88P'    Y88888P   `Y88P'  YP   YP  Y888888P
 YP  YP  YP    d88888P       YP      YP   YP    VP   V8P   
 
 */
+
+int		ft_strcmp(const char *s1, const char *s2)
+{
+	if (s1 == NULL)
+		return (-1);
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}
 
 int				arrlen(char **arr)
 {
@@ -164,9 +176,7 @@ char	**set_env(char *var, char *value, char **env)
 		env[i] = line;
 	}
 	else
-	{
 		return (add_to_arr(line, env));
-	}
 	return (env);
 }
 
@@ -199,6 +209,7 @@ int main(int ac, char **av, char **env)
 	// int		err = 2;
 	char **arr;
 
+	printf("START : %s\n", getcwd(NULL, 0));
 	if (env)
 	{
 		arr = arrdup(env, arrlen(env));
@@ -228,18 +239,15 @@ int main(int ac, char **av, char **env)
 			printf("cd: OLDPWD not set\n");		
 	}
 	else if (path != NULL)
-	{
 		if (chdir(path) != 0)
 			puts("Error");
-	}
 	arr = set_env("OLDPWD", pwd, arr);
 	pwd = getcwd(NULL, 0);
 	arr = set_env("PWD", pwd, arr);
-	puts("here");
 	if (!(ft_strcmp(av[1], "env")))
 	{
-		puts("jjjj");
 		ft_print_env(arr);
 	}
+	printf("END   : %s\n", getcwd(NULL, 0));
 	return (0);
 }

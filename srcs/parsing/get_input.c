@@ -21,9 +21,15 @@ void		print_tab(char **tab)
 		printf("TAB[%d] = |%s|\n", i, tab[i]);
 }
 
-void		test_input(t_ms *ms, char *in)
+void		test_input(t_ms *ms, char **tab)
 {
-	ms->pp_count = char_counter(in, '|');
+	int i;
+
+	i = -1;
+	while (++i)
+	{
+		ft_lstadd_back(ms->cmd,ms-);// STOPPED HERE
+	}
 }
 
 void		parse_in(t_ms *ms)
@@ -39,4 +45,5 @@ void		parse_in(t_ms *ms)
 		exit(1);
 	}
 	print_tab(ms->tab);
+	test_input(ms, ms->tab);
 }

@@ -44,7 +44,7 @@ typedef		struct	s_ms
 	char			*input;
 	char			*output;
 	short			is_op;
-	t_cmd			cmd;
+	t_cmd			*cmd;
 	int				pp_count;
 	char			*path;
 	char			*old_path;

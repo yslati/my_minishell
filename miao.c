@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 09:32:04 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/31 09:26:28 by yslati           ###   ########.fr       */
+/*   Updated: 2020/10/31 09:51:33 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ void			sort_env(char **env)
 	{
 		str = (char *)malloc(sizeof(char) * (strlen(env[i]) + 14));
 		str = strcpy(str, "declare -x ");
-		tmp = strdup(env[i]);
+		tmp = strdup("");
 		tmp = ft_strcpy_pro(tmp, env[i], '=');
 		str = strcat(str, tmp);
 		if ((tmp = strchr(env[i], '=')))

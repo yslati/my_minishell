@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 09:32:04 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/30 14:45:00 by yslati           ###   ########.fr       */
+/*   Updated: 2020/10/31 09:26:28 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,26 +227,28 @@ void    ft_sort_wordtab(char **tab)
 void			sort_env(char **env)
 {
 	int			i;
-	char		**tab;
+	char		*str;
 	char		*tmp;
 
 	i = 0;
 	if (env)
 		ft_sort_wordtab(env);
-	tab = arrdup(env, arrlen(env));
-	while (tab[i])
+	while (env[i])
 	{
-		tab[i] = strcpy(tab[i], "declare -x ");
+		str = (char *)malloc(sizeof(char) * (strlen(env[i]) + 14));
+		str = strcpy(str, "declare -x ");
+		tmp = strdup(env[i]);
 		tmp = ft_strcpy_pro(tmp, env[i], '=');
-		tab[i] = strcat(tab[i], tmp);
+		str = strcat(str, tmp);
 		if ((tmp = strchr(env[i], '=')))
 		{
-			tab[i] = strcat(tab[i], "=\"");
-			tab[i] = strcat(tab[i], ++tmp);
-			tab[i] = strcat(tab[i], "\"");
+			str = strcat(str, "=\"");
+			str = strcat(str, tmp + 1);
+			str = strcat(str, "\"");
+			str = strcat(str, "\0");
 		}
 		
-		ft_putendl_fd(tab[i], 1);
+		ft_putendl_fd(str, 1);
 		i++;
 	}
 }
@@ -264,7 +266,7 @@ int				main(int ac, char **av, char **env)
 
 	if (!arg)
 	{
-		puts("sort env");
+		// puts("sort env");
 		sort_env(arr);
 	}
 	else if (strchr(arg, '='))

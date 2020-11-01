@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 09:38:07 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/31 11:28:34 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/01 09:20:36 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,15 +115,15 @@ int			get_env(char **env, char *var)
 	i = 0;
 	search = strcpy(search, var);
 	search = strcat(search, "=");
+	// printf("saerch = |%s|\n", search);
 	if (env)
 	{
 		while (env[i])
 		{
 			if (!(strncmp(env[i], search, strlen(search))))
-			{
 				return (i);
-			}
 			i++;
+			// printf("i === |%d|\n", i);
 		}
 	}
 	return (-1);
@@ -157,6 +157,7 @@ int				check_exist(char **env, char *arg)
 
 	wanted = strdup("");
 	wanted = ft_strcpy_pro(wanted, arg, '=');
+	// printf("wanted : |%s|\n", wanted);
 	if ((i = get_env(env, wanted)) != -1)
 		return (i);
 	return (-1);
@@ -197,12 +198,9 @@ int				main(int ac, char **av, char **env)
 	
 	if (arg)
 	{
-		if ((strchr(arg, '=')) && (i = check_exist(arr, arg) != -1))
+		if (strchr(arg, '='))
 		{
-			puts("with");
-			// i = check_exist(arr, arg);
-			arr = rm_arr(env, i);
-			// printf("%d\n", i);
+			printf("minishell: unset: `%s': not a valid identifier\n", arg);
 		}
 		else if ((i = check_exist(arr, arg)) != -1)
 		{
@@ -214,7 +212,7 @@ int				main(int ac, char **av, char **env)
 		else
 			puts("makinch had l3jb");
 	}
-	ft_print_env(arr);
+	// ft_print_env(arr);
 	
 	return (0);
 }

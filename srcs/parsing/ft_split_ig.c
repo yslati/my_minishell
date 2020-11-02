@@ -6,7 +6,7 @@
 /*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 12:58:28 by obouykou          #+#    #+#             */
-/*   Updated: 2020/10/29 12:58:31 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/10/31 11:01:13 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,15 @@ int		ft_words(char const *s, char c)
 	{
 		if (*s == '\'' | *s == '"')
 			s += quote_handler(s);
+		if ((*s == ';' || *s == '|') && *(s + 1) != c)
+			len++ && ++s;
+		if (*s && *s != c && (*(s + 1) == ';' || *(s + 1) == '|'))
+			len++;
 		if ((*s == c && *(s + 1) != c) || *(s + 1) == '\0')
 			len++;
 		s++;
 	}
+	printf("LEN=|%d|\n", len);
 	return (len);
 }
 
@@ -87,10 +92,31 @@ int		ft_len_elem(char const *s, char c)
 			size += ret;
 			i += ret;
 		}
+		if (*s == ';' || *s == '|')
+		{
+			size++;
+			break ;
+		}
 		if (s[i] != c)
 			size++;
+		if (s[i] && s[i] != c && (s[i + 1] == ';' | s[i + 1] == '|'))
+			break ;
 	}
 	return (size);
+}
+
+char	*quote_filling(char *s, char *quote, int *i, char *elem)
+{
+	if (*s == '\'' | *s == '"')
+	{
+		*quote = *s;
+		elem[(*i)++] = *s++;
+		while (*s && *s != *quote)
+			elem[(*i)++] = *s++;
+		if (*s)
+			elem[(*i)++] = *s++;
+	}
+	return (s);
 }
 
 char	*fill_elem(char *elem, char *s, char c)
@@ -102,17 +128,19 @@ char	*fill_elem(char *elem, char *s, char c)
 	while (*s && *s != c)
 	{
 		quote = 0;
-		if (*s == '\'' | *s == '"')
+		s = quote_filling(s, &quote, &i, elem);
+		if (*s == ';' || *s == '|')
 		{
-			quote = *s;
 			elem[i++] = *s++;
-			while (*s && *s != quote)
-				elem[i++] = *s++;
-			if (*s)
-				elem[i++] = *s++;
+			break ;
 		}
 		if (*s && !quote)
 			elem[i++] = *s++;
+		if (*s && *s != c && (*(s + 1) == ';' | *(s + 1) == '|'))
+		{
+			elem[i++] = *s++;
+			break ;
+		}
 	}
 	elem[i] = '\0';
 	return (s);

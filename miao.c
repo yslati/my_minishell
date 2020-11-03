@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 09:32:04 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/31 09:51:33 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/03 14:28:43 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void			ft_putendl_fd(char *s, int fd)
 	ft_putchar_fd('\n', fd);
 }
 
-int				arrlen(char **arr)
+/* int				arrlen(char **arr)
 {
 	int 	i;
 	
@@ -62,9 +62,9 @@ int				arrlen(char **arr)
 			i++;
 	}
 	return (i);
-}
+} */
 
-char			**arrdup(char **arr, int len)
+/* char			**arrdup(char **arr, int len)
 {
 	char 	**ret;
 	int 	i;
@@ -76,7 +76,7 @@ char			**arrdup(char **arr, int len)
 		ret[i] = strdup(arr[i]);
 	ret[i] = NULL;
 	return (ret);
-}
+} */
 
 char	*ft_strcpy_pro(char *dst, const char *src, char c)
 {
@@ -92,7 +92,7 @@ char	*ft_strcpy_pro(char *dst, const char *src, char c)
 	return (dst);
 }
 
-int			get_env(char **env, char *var)
+/* int			get_env(char **env, char *var)
 {
 	int 	i;
 	char	*search;
@@ -113,7 +113,7 @@ int			get_env(char **env, char *var)
 		}
 	}
 	return (-1);
-}
+} */
 
 char	**get_arr(char *value, char **env)
 {

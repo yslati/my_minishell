@@ -23,32 +23,26 @@
 #include "../libft/libft.h"
 
 # define SIZE		16384
-# define APPEND		1
-# define TRUNC		2
-# define READ		3
+# define APPEND		'a'
+# define TRUNC		'>'
+# define READ		'<'
 # define TRUE		1
 # define FLASE		0
 # define PIPE		124
 # define S_COLON	59
-# define STX_ERR	1	
+# define STX_ERR	1
+# define RDIN_ERR	2
+# define SPLT_ERR	3
 
-# define HELLO "\n======> SAFE <======"
+# define HELLO "\n\n======> SAFE <======\n\n"
 
-typedef		struct	s_len
-{
-	short			ac;
-	char			redir;
-	char			start;
-	char			end;
-}					t_len;
 typedef		struct	s_cmd
 {
-	char			*cmds;
+	char			*cmd;
 	char			**args;
 	char			start;
 	char			end;
 	char			redir;
-	char			*file;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }					t_cmd;
@@ -59,12 +53,14 @@ typedef		struct	s_ms
 	char			*output;
 	int				err;
 	short			is_op;
-	t_cmd			*cmd;
+	t_cmd			*cmds;
+	int				cmds_count;
 	int				pp_count;
 	char			*path;
 	char			*old_path;
 	char			*ptr;
 	char			**tab;
+	char			**env;
 	int				ret;
 }					t_ms;
 
@@ -72,13 +68,15 @@ void				get_input(t_ms *ms);
 size_t				ft_strlen(const char *s);
 int					tb_len(char **table);
 char				**free_str_table(char **tab, int size);
-void				ft_exit(t_ms *ms);
-void				ft_echo(t_ms *ms);
-void				ft_cmd(t_ms *ms);
 void				init(t_ms *ms, char step);
-void				parse_in(t_ms *ms);
+void				parse(t_ms *ms);
 int					char_counter(char *s, char c);
-char				**ft_split_ig(char const *s, char c);
+char				**parse_split(char const *s, char c);
 void				print_tab(char **tab);
+void				print_cmds(t_cmd *cmds);
+void				errex(t_ms *ms, int ex);
+char				**dup_str_tab(char **arr);
+void				new_cmd(t_cmd **head, char del, char **tab);
+void				minishell(char **env, int step);
 
 #endif

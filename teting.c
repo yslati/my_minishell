@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 11:38:41 by yslati            #+#    #+#             */
-/*   Updated: 2020/10/30 11:27:46 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/03 14:46:07 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,9 +245,7 @@ int main(int ac, char **av, char **env)
 	pwd = getcwd(NULL, 0);
 	arr = set_env("PWD", pwd, arr);
 	if (!(ft_strcmp(av[1], "env")))
-	{
 		ft_print_env(arr);
-	}
 	printf("END   : %s\n", getcwd(NULL, 0));
 	return (0);
 }

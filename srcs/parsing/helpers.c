@@ -6,7 +6,7 @@
 /*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 12:04:11 by obouykou          #+#    #+#             */
-/*   Updated: 2020/10/28 10:54:07 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/11/03 11:02:30 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		tb_len(char **table)
 	return (len);
 }
 
-char			**free_str_table(char **tab, int size)
+char	**free_str_table(char **tab, int size)
 {
 	if (!tab)
 		return (NULL);
@@ -45,3 +45,17 @@ char			**free_str_table(char **tab, int size)
 	free(tab);
 	return (NULL);
 }
+
+char	**dup_str_tab(char **arr)
+{
+	int		l;
+	char	**tab;
+
+	l = tb_len(arr);
+	if (!(tab = (char **)malloc((l + 1) * sizeof(char *))))
+	tab[l] = NULL;
+	while (--l <= 0)
+		tab[l] =arr[l];
+	return (tab);
+}
+		

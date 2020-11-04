@@ -52,13 +52,12 @@ typedef		struct	s_ms
 	char			*input;
 	char			*output;
 	int				err;
-	short			is_op;
 	t_cmd			*cmds;
+	int				redir;
 	int				cmds_count;
 	int				pp_count;
-	char			*path;
-	char			*old_path;
-	char			*ptr;
+	char			*pwd;
+	char			*old_pwd;
 	char			**tab;
 	char			**env;
 	int				ret;
@@ -72,11 +71,31 @@ void				init(t_ms *ms, char step);
 void				parse(t_ms *ms);
 int					char_counter(char *s, char c);
 char				**parse_split(char const *s, char c);
-void				print_tab(char **tab);
+void				print_tab(char **tab, FILE *f);
 void				print_cmds(t_cmd *cmds);
 void				errex(t_ms *ms, int ex);
 char				**dup_str_tab(char **arr);
-void				new_cmd(t_cmd **head, char del, char **tab);
+t_cmd				*get_head(t_cmd *cmds);
+void				new_cmd(t_ms *ms, char del, char **tab);
+/*  */
+int					arrlen(char **arr);
+char				**arrdup(char **arr, int len);
+char				*ft_strcpy_pro(char *dst, const char *src, char c);
+int					get_env(char **env, char *var);
+char				**get_arr(char *value, char **env);
+int					check_exist(char **env, char *arg);
+char				**rm_arr(char **env, int pos);
+void				ft_print_env(char **env);
+void				sort_env(char **env);
+char				**add_to_arr(char *value, char **env);
+char    			**set_env(char *var, char *value, char **env);
+char    			**set_env(char *var, char *value, char **env);
+int					ft_cd(t_ms *ms);
+int					ft_env(t_ms *ms, char **env);
+int					ft_export(t_ms *ms, char **env);
+int					ft_pwd(t_ms *ms);
+int					ft_unset(t_ms *ms, char **env);
+/*  */
 void				minishell(char **env, int step);
 
 #endif

@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/27 11:03:38 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/04 13:00:42 by yslati           ###   ########.fr       */
+/*   Created: 2020/11/04 09:51:07 by obouykou          #+#    #+#             */
+/*   Updated: 2020/11/04 09:51:19 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-int			ft_pwd(t_ms *ms)
+char	*ft_strcat(char *s1, const char *s2)
 {
-	ms->pwd = getcwd(NULL, 0);
-	ft_putendl_fd(ms->pwd, 1);
-	return (0);
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (s1[i])
+		i++;
+	while (s2[j])
+	{
+		s1[i + j] = s2[j];
+		j++;
+	}
+	s1[i + j] = '\0';
+	return (s1);
 }

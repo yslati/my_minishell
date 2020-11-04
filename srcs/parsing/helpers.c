@@ -6,7 +6,7 @@
 /*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 12:04:11 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/03 11:02:30 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/11/04 09:52:33 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ char	**dup_str_tab(char **arr)
 
 	l = tb_len(arr);
 	if (!(tab = (char **)malloc((l + 1) * sizeof(char *))))
+		return(NULL);
 	tab[l] = NULL;
-	while (--l <= 0)
-		tab[l] =arr[l];
+	while (--l >= 0)
+		tab[l] = ft_strdup(arr[l]);
 	return (tab);
 }
-		

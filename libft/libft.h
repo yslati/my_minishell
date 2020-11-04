@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:51:19 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/03 10:21:56 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/11/04 12:13:59 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char			*ft_strchr(const char *s, int c);
 char			*ft_strdup(const char *src);
 char			*ft_strldup(const char *src, int l);
 char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_strcpy(char *dst, const char *src);
+char			*ft_strcat(char *s1, const char *s2);
 size_t			ft_strlcat(char *dest, const char *src, size_t size);
 size_t			ft_strlcpy(char *dest, const char *src, size_t size);
 size_t			ft_strlen(const char *str);
@@ -56,6 +58,7 @@ char			*ft_strnstr(const char *haystack, const char *needle,\
 size_t len);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strtrim(char const *s1, char const *set);
+void    		ft_sort_arr(char **tab);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 int				ft_tolower(int c);
 int				ft_toupper(int c);

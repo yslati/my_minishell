@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 14:04:34 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/04 14:43:25 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/07 09:49:26 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int				check_exist(char **env, char *arg)
 {
 	int i;
-	char	*wanted;
+	// char	*wanted;
 
-	wanted = ft_strdup("");
-	wanted = ft_strcpy_pro(wanted, arg, '=');
-	if ((i = get_env(env, wanted)) != -1)
+	// wanted = ft_strdup("");
+	// wanted = ft_strcpy_pro(wanted, arg, '=');
+	if (((i = get_env(env, arg)) != -1))
 		return (i);
 	return (-1);
 }
@@ -52,19 +52,22 @@ int         ft_unset(t_ms *ms, char **env)
 
 	i = 0;
 	if (env)
-		ms->env = arrdup(env, arrlen(env));
+		i = + 1 - 1;
+		// ms->env = arrdup(env, arrlen(env));
 	if (ms->cmds->args[1])
 	{
 		if (ft_strchr(ms->cmds->args[1], '='))
 			printf("minishell: unset: `%s': not a valid identifier\n", ms->cmds->args[1]);
 		else if ((i = check_exist(ms->env, ms->cmds->args[1])) != -1)
 		{
+			//printf("i_get_env = %d\n", i);
 			i = get_env(env, ms->cmds->args[1]);
 			ms->env = rm_arr(ms->env, i);
 		}
 		else
 			puts("makinch had l3jb"); // print just new line 
 	}
-	ft_putendl_fd("", 1);
+	else
+		ft_putendl_fd("", 1);
 	return 0;
 }

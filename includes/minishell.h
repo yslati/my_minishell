@@ -49,10 +49,11 @@ typedef		struct	s_cmd
 
 typedef		struct	s_ms
 {
-	char			*input;
+	char			input[SIZE];
 	char			*output;
 	int				err;
 	t_cmd			*cmds;
+	t_cmd			*lst_end;
 	int				redir;
 	int				cmds_count;
 	int				pp_count;
@@ -97,5 +98,6 @@ int					ft_pwd(t_ms *ms);
 int					ft_unset(t_ms *ms, char **env);
 /*  */
 void				minishell(char **env, int step);
-
+void				erase_file_debug();
+void				write_to_file(char *s, char *num, int end);
 #endif

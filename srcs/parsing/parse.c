@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:21:10 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/04 11:48:27 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/11/06 20:14:52 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		parse_read_rdr(t_ms *ms, int b, int i, char *s)
 	free(tmp);
 }
 
-void		parse_scolon_pp(t_ms *ms, int b, int *i, char *s)
+int		make_cmd(t_ms *ms, int b, int *i, char *s)
 {
 	ms->cmds_count++;
 	if (s[*i] == S_COLON)
@@ -82,36 +82,44 @@ void		parse_scolon_pp(t_ms *ms, int b, int *i, char *s)
 	else if (s[*i] == READ)
 		parse_read_rdr(ms, b, *i, ms->input);
 	new_cmd(ms, s[*i], ms->tab);
+	free_str_table(ms->tab, tb_len(ms->tab));
 	ms->tab = NULL;
 	ms->redir = 0;
+	return (*i + 1);
 }
 
-void		parse(t_ms *ms)
+void		get_input(t_ms *ms)
 {
-	int		i;
-	int		b;
-	char	*s;
+	int i;
 
 	if ((i = read(0, ms->input, SIZE)) < 0)
 	{
 		ms->err = RDIN_ERR;
 		errex(ms, 0);
 	}
-	ms->input[i - 1] = 0;
-	s = ms->input;
+	ms->input[i - 1] = '\0';
+}
+
+void		parse(t_ms *ms)
+{
+	int		i;
+	int		b;
+
+	get_input(ms);
 	i = -1;
 	b = 0;
-	
 	while (ms->input[++i])
 		if (is_from(ms->input[i], "|;><"))	
 		{
-			parse_scolon_pp(ms, b, &i, ms->input);
+			make_cmd(ms, b, &i, ms->input);
 			b = i + 1;
 		}
-	ms->tab = parse_split(ms->input + b, ' ');
-	new_cmd(ms, S_COLON, ms->tab);
-	++ms->cmds_count;
-	ms->tab = NULL;
+	if (ms->input[0])
+	{
+		ms->tab = parse_split(ms->input + b, ' ');
+		new_cmd(ms, S_COLON, ms->tab);
+		++ms->cmds_count;
+	}
 	ms->cmds = get_head(ms->cmds);
 	print_cmds(ms->cmds);
 }

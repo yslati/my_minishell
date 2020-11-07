@@ -32,7 +32,7 @@ FLAGS = -Wextra -Werror -Wall
 all: $(NAME)
 
 $(NAME): $(OBJECT) $(HEADER)
-	@cd ./libft && make re
+	@cd ./libft && make
 	@ar -rcs $(LIB) $(OBJECT_AR)
 	@gcc  $(FLAGS) $(MS_MAIN) $(LIBFT) $(LIB) -o $(NAME)
 	@echo "\n\033[32m------- Minishell has been created successfully -------\033[0m\n"

@@ -6,12 +6,11 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 14:23:28 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/07 09:23:56 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/14 12:26:42 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 char	*ft_strcpy_pro(char *dst, const char *src, char c)
 {
@@ -35,7 +34,7 @@ void			sort_env(char **env)
 	char		**arr;
 
 	i = 0;
-	arr = arrdup(env, arrlen(env));
+	arr = dup_str_tab(env);
 	if (arr)
 		ft_sort_arr(arr);
 	while (arr[i])
@@ -57,37 +56,50 @@ void			sort_env(char **env)
 	}
 }
 
-int			ft_export(t_ms *ms, char **env)
+int 		valid_arg(t_ms *ms, int i)
+{
+	int j;
+
+	j = 0;
+	if (!ft_isalpha(ms->cmds->args[i][0]))
+		return (0);
+	while (ft_isalnum(ms->cmds->args[i][++j]) && ms->cmds->args[i][j])
+		;
+	return (ms->cmds->args[i][j] == '\0');
+}
+
+int			ft_export(t_ms *ms)
 {
 	int i;
+	int len;
 
-	i = 0;
-	if (env)
-		i = + 1 - 1;
-		// ms->env = arrdup(env, arrlen(env));
-	if (!ms->cmds->args[1])
+	i = 1;
+	len = 0;
+	if (!ms->cmds->args[i])
 		sort_env(ms->env);
-	else if (ft_strchr(ms->cmds->args[1], '='))
-	{
-		// puts("add to ENV");
-		if ((i = check_exist(ms->env, ms->cmds->args[1])) != -1)
-		{
-			// puts("kayn in ENV");
-			(ms->env[i]) ? free(ms->env[i]) : 0;
-			ms->env[i] = ms->cmds->args[1];
-		}
-		else
-		{
-			// puts("makinch in ENV");
-			ms->env = add_to_arr(ms->cmds->args[1], ms->env);
-			//ft_print_env(ms->env);
-		}
-	}
 	else
+	while (ms->cmds->args[i])
 	{
-		// puts("without = ");
-		ms->env = add_to_arr(ms->cmds->args[1], ms->env);
-		//ft_print_env(ms->env);
+		if (!valid_arg(ms, i))
+		{
+			ft_putstr_fd("minishell: export: `", 1);	
+			ft_putstr_fd(ms->cmds->args[i++], 1);	
+			ft_putstr_fd("': not a valid identifier\n", 1);
+			continue;	
+		}
+		if (ft_strchr(ms->cmds->args[i], '='))
+		{
+			if ((len = check_exist(ms->env, ms->cmds->args[i])) != -1)
+			{
+				(ms->env[len]) ? free(ms->env[len]) : 0;
+				ms->env[len] = ms->cmds->args[i];
+			}
+			else
+				ms->env = add_to_arr(ms->cmds->args[i], ms->env);
+		}
+		else if ((cmp_get_pos(ms->env, ms->cmds->args[i])) == -1)
+				ms->env = add_to_arr(ms->cmds->args[i], ms->env);
+		i++;
 	}
 	return 0;
 }

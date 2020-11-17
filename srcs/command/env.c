@@ -6,39 +6,11 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 18:25:14 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/07 09:48:56 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/14 14:40:21 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <string.h>
-
-int				arrlen(char **arr)
-{
-	int 	i;
-	
-	i = 0;
-	if (arr)
-	{
-		while (arr[i] != NULL)
-			i++;
-	}
-	return (i);
-}
-
-char			**arrdup(char **arr, int len)
-{
-	char 	**ret;
-	int 	i;
-
-	i = -1;
-	if (!(ret = (char **)malloc(sizeof(char *) * (len + 1))))
-		return (NULL);
-	while (++i < len)
-		ret[i] = ft_strdup(arr[i]);
-	ret[i] = NULL;
-	return (ret);
-}
 
 int			get_env(char **env, char *var)
 {
@@ -49,19 +21,20 @@ int			get_env(char **env, char *var)
 	i = 0;
 	search = ft_strcpy(search, var);
 	search = ft_strcat(search, "=");
-	//printf("arg: %s\n",search);
-	//search = ft_strcat(search, "\0");
-	//printf("search = |%s|\n", search);
+	//printf("\n GE ;;;; env[%i]: %s -- search: %s\n", i, env[i], search);
 	if (env)
 	{
 		while (env[i])
 		{
 			if (!(ft_strncmp(env[i], search, ft_strlen(search))))
+			{
+				free(search);
 				return (i);
+			}
 			i++;
 		}
 	}
-	//puts("waloo");
+	free(search);
 	return (-1);
 }
 
@@ -72,7 +45,7 @@ char	**get_arr(char *value, char **env)
 	int		i;
 	
 	i = 0;
-	len = arrlen(env) + 2;
+	len = tb_len(env) + 2;
 	if (!(arr = (char **)malloc(sizeof(char *) * len)))
 		return (NULL);
 	while(env[i])
@@ -93,7 +66,7 @@ char	**add_to_arr(char *value, char **env)
 	char **new_arr;
 
 	i = 0;
-	len = arrlen(env);	
+	len = tb_len(env);	
 	if (env == NULL)
 	{
 		new_arr = (char **)malloc(sizeof(char *) * 2);
@@ -142,14 +115,11 @@ void	ft_print_env(char **env)
 	}
 }
 
-int			ft_env(t_ms *ms, char **env)
+int			ft_env(t_ms *ms)
 {
     int		i;
 
     i = 0;
-	if (env)
-		i = + 1 - 1;
-		// ms->env = arrdup(env, arrlen(env));
 	if (!ms->cmds->args[1])
 		ft_print_env(ms->env);
 	else

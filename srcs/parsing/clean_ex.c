@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_ex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouykou <obouykou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:23:08 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/03 11:31:12 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/11/15 17:24:24 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ void	errex(t_ms *ms, int step)
 		ft_putstr_fd("minishell: splitting input error", 1);
 	if (!step)
 		clean(ms);
-	minishell(ms->env, step);
+	minishell(ms->env, step != 0);
 }

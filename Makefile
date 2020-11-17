@@ -31,7 +31,7 @@ FLAGS = -Wextra -Werror -Wall
 
 all: $(NAME)
 
-$(NAME): $(OBJECT) $(HEADER)
+$(NAME): $(OBJECT) $(HEADER) $(FILES)
 	@cd ./libft && make
 	@ar -rcs $(LIB) $(OBJECT_AR)
 	@gcc  $(FLAGS) $(MS_MAIN) $(LIBFT) $(LIB) -o $(NAME)

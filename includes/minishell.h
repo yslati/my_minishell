@@ -61,12 +61,16 @@ typedef		struct	s_ms
 	t_cmd			*lst_end;
 	int				redir;
 	int				pp_count;
+	int 			*fds;
 	char			*pwd;
 	char			*old_pwd;
 	char			**tab;
 	char			**env;
 
 	int				status;
+	int				skip;
+	int				j;
+	int 			backup[3];
 }					t_ms;
 
 /* Parsing */
@@ -98,7 +102,6 @@ void				ft_print_env(char **env);
 void				sort_env(char **env);
 char				**add_to_arr(char *value, char **env);
 char    			**set_env(char *var, char *value, char **env);
-char    			**set_env(char *var, char *value, char **env);
 int					ft_cd(t_ms *ms);
 int					ft_env(t_ms *ms);
 int					ft_export(t_ms *ms);
@@ -110,7 +113,8 @@ void				check_command(t_ms *ms);
 char				*get_exec_path(t_ms *ms);
 void				exec_command(t_ms *ms);
 int					is_builtin_sys(char *cmds);
-int 				valid_arg(t_ms *ms, int i);
+int 				valid_arg(char *arg);
+int					ft_error(t_ms *ms, int err);
 /*  */
 int					minishell(char **env, int step);
 

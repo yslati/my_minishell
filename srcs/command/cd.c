@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 14:04:48 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/13 09:58:24 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/21 10:13:25 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int         ft_cd(t_ms *ms)
 
 	i = 0;
 	x = 0;
-	// puts("wa l3alwa");
 	if (!ms->cmds->args[1] || !ft_strcmp(ms->cmds->args[1], "~"))
 	{
 		i = get_env(ms->env, "HOME");
@@ -42,6 +41,7 @@ int         ft_cd(t_ms *ms)
 			ft_putstr_fd("minishell: cd: ", 1);
 			ft_putstr_fd(ms->cmds->args[1], 1);
 			ft_putendl_fd(": No such file or directory", 1);
+			x = 1;
 		}
 	if (x == 0)
 	{

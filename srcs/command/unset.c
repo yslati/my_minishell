@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 14:04:34 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/14 14:33:18 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/19 14:04:23 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int         ft_unset(t_ms *ms)
 	i = 1;
 	while (ms->cmds->args[i])
 	{
-		if (ft_strchr(ms->cmds->args[i], '=') || !valid_arg(ms, i))
+		if (ft_strchr(ms->cmds->args[i], '=') || !valid_arg(ms->cmds->args[i]))
 		{
 			ft_putstr_fd("minishell: unset: `", 1);
 			ft_putstr_fd(ms->cmds->args[i], 1);

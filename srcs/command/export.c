@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 14:23:28 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/14 12:26:42 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/19 14:09:57 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,17 @@ void			sort_env(char **env)
 	}
 }
 
-int 		valid_arg(t_ms *ms, int i)
+int 		valid_arg(char *arg)
 {
 	int j;
 
 	j = 0;
-	if (!ft_isalpha(ms->cmds->args[i][0]))
+	if (!ft_isalpha(arg[0]))
 		return (0);
-	while (ft_isalnum(ms->cmds->args[i][++j]) && ms->cmds->args[i][j])
-		;
-	return (ms->cmds->args[i][j] == '\0');
+	while (arg[++j] && arg[j] != '=')
+		if (!ft_isalnum(arg[j]))
+			return (0);
+	return (1);
 }
 
 int			ft_export(t_ms *ms)
@@ -80,12 +81,12 @@ int			ft_export(t_ms *ms)
 	else
 	while (ms->cmds->args[i])
 	{
-		if (!valid_arg(ms, i))
+		if (!valid_arg(ms->cmds->args[i]))
 		{
 			ft_putstr_fd("minishell: export: `", 1);	
 			ft_putstr_fd(ms->cmds->args[i++], 1);	
 			ft_putstr_fd("': not a valid identifier\n", 1);
-			continue;	
+			continue;
 		}
 		if (ft_strchr(ms->cmds->args[i], '='))
 		{

@@ -6,64 +6,54 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 12:30:38 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/16 09:05:29 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/25 09:23:37 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void		print_tab(char **tab, FILE *f)
+void		print_tab(char **tab, char *tab_name, FILE *f)
 {
 	int i;
-
-	i = -1;
-//	fprintf(f, "\n**ARGS Tab length = |%d|\n", tb_len(tab));
+	
 	if (f != NULL)
 	{
+		fprintf(f, "\n%s length = |%d|\n", tab_name, tb_len(tab));
 		if (!tab)
-			fputs("\nARGS TAB is NULL\n", f);
+			fprintf(f, "\n%s is NULL\n", tab_name);
 		else
 		{
+			fprintf(f, "\n%s\n\n", tab_name);
 			if (tab[0] == NULL)
-				fprintf(f, "\tARG[%d] = |%s|", 0, tab[0]);
+				fprintf(f, "\t%s[%d] = |%s|",tab_name, 0, tab[0]);
+			i = -1;
 			while (tab[++i])
-				fprintf(f, "\tARG[%d] = |%s|", i, tab[i]);
+				fprintf(f, "\t%s[%d] = |%s|", tab_name, i, tab[i]);
 		}
 	}
 	else
-	{
-		if (!tab)
-			puts("\nARGS TAB is NULL\n");
-		else
-		{
-			if (tab[0] == NULL)
-				printf("\tARG[%d] = |%s|", 0, tab[0]);
-			while (tab[++i])
-				printf("\tARG[%d] = |%s|", i, tab[i]);
-		}
-	}
-}
-
-t_cmd		*get_head(t_cmd *cmds)
-{
-	while (cmds && cmds->prev)
-		cmds = cmds->prev;
-	return (cmds);
+		printf("FILE DESCRIPTOR IS NULL\n");
 }
 
 void		print_cmds(t_cmd *cmds)
 {
-	FILE *f;
-	f = fopen("/Users/yslati/Desktop/minishell_yo/debug", "w+");
-	if (cmds == NULL)
-		fputs("\nERROR: ==> cmds is NULL\n", f);
-	while (cmds)
+	FILE *fd;
+
+	fd = fopen("/Users/yslati/Desktop/minishell_yo/debug", "a+");
+	if (fd)
 	{
-		fprintf(f,"\n==> CMD=|%s|\n\nARGS:\n", cmds->cmd);
-		print_tab(cmds->args, f);
-		fprintf(f, "\nStart=|%d|\tEnd=|%d|\tRedir=|%c|%d|\tErr=|%d|\tStatus=|%d|\n", 
-					cmds->start, cmds->end, cmds->redir, cmds->redir, cmds->is_err, cmds->is_status);
-		cmds = cmds->next;
+		if (cmds == NULL)
+			fputs("\nERROR: ==> cmds is NULL\n", fd);
+		while (cmds)
+		{
+			fprintf(fd,"\n\n===================================\n\n==> CMD=|%s|\n", cmds->cmd);
+			print_tab(cmds->args, "CMD_ARGS", fd);
+			fprintf(fd, "\n\nStart=|%d|\tEnd=|%d|\tRedir=|%c|%d|\tErr=|%d|\tStatus=|%d|\n", 
+						cmds->start, cmds->end, cmds->redir, cmds->redir, cmds->is_err, cmds->is_status);
+			cmds = cmds->next;
+		}
 	}
-	fclose(f);
+	else
+		printf("FILE DESCRIPTOR IS NULL\n");
+	fclose(fd);
 }

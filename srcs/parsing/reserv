@@ -1,0 +1,23 @@
+	p.ignore = 0;
+	p.ti = 0;
+	ms->cmd_tab[p.l] = NULL;
+	while (ms->input[p.i])
+	{
+		if (p.ignore)
+			p.i++;
+		p.ignore = 0;
+		if (ms->input[p.i] == '\\' && ++p.i)
+			p.ignore = 1;
+		if (!p.ignore)
+		{
+			if (ms->input[p.i] && ft_strchr("'\"", ms->input[p.i]))
+				p.i += quote_handler(ms->input + p.i, 1);
+			if (ms->input[p.i] == ';')
+			{
+				ms->cmd_tab[p.ti++] = ft_substr(ms->input, p.j, p.i - p.j + 1);
+				p.j = p.i + 1 + skip_while(ms->input + p.i + 1, ' ');
+			}
+		}
+		if (!p.ignore)
+			p.i++;
+	}

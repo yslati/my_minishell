@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 14:04:48 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/21 10:13:25 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/26 11:18:20 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ int         ft_cd(t_ms *ms)
 		else
 		{
 			x = 1;
-			ft_putendl_fd("cd: OLDPWD not set", 1);
+			ft_putendl_fd("cd: OLDPWD not set", 2);
 		}
 	}
 	else if (ms->cmds->args[1] != NULL)
 		if (chdir(ms->cmds->args[1]) != 0)
 		{
-			ft_putstr_fd("minishell: cd: ", 1);
-			ft_putstr_fd(ms->cmds->args[1], 1);
-			ft_putendl_fd(": No such file or directory", 1);
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(ms->cmds->args[1], 2);
+			ft_putendl_fd(": No such file or directory", 2);
 			x = 1;
 		}
 	if (x == 0)

@@ -6,7 +6,7 @@
 /*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:21:10 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/16 14:58:01 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/11/24 14:20:24 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,66 +81,56 @@ int		make_cmd(t_ms *ms, int b, int *i, char *s)
 	return (*i + 1);
 }
 
-void		get_input(t_ms *ms)
+t_cmd		*get_head(t_cmd *cmds, char *err)
 {
-	int i;
-
-	if ((i = read(0, ms->input, SIZE)) < 0)
+	if (cmds && cmds->is_err)
+		*err = cmds->is_err;
+	while (cmds && cmds->prev)
 	{
-		ms->err = RDIN_ERR;
-		errex(ms, 0);
+		if (cmds->is_err)
+			*err = cmds->is_err;
+		cmds = cmds->prev;
 	}
-	ms->input[i - 1] = '\0';
-}
-
-int			skip_while(char *s, char c)
-{
-	int i;
-	
-	i = 0;
-	while (s[i] == c)
-		++i;
-	return (i);
+	return (cmds);
 }
 
 void		parse(t_ms *ms)
 {
-	int		i;
-	int		b;
+	t_parser p;
 
-	get_input(ms);
-	//printf("INPUT after get_input()==>|%s|\n", ms->input);
 	parse_d(ms);
-	// printf("INPUT after parse_d()==>|%s|\n", ms->input);
-	i = -1;
-	b = 0;
-	while (ms->input[++i])
+	p.i = 0;
+	p.ignore = 0;
+	p.j = 0;
+	while (ms->input[p.i])
 	{
-		if (ft_strchr("'\"", ms->input[i]) && ((i && ms->input[i - 1] != '\\') || !i))
-			i += quote_handler(ms->input + i, 0);
-		if (ft_strchr("|;><", ms->input[i]) && ((i && ms->input[i - 1] != '\\') || !i))
+		if (p.ignore)
+			p.i++;
+		p.ignore = 0;
+		if (ms->input[p.i] == '\\' && ++p.i)
+			p.ignore = 1;
+		if (ms->input[p.i] && !p.ignore)
 		{
-			make_cmd(ms, b, &i, ms->input);
-			b = i + 1;
+			if (ft_strchr("'\"", ms->input[p.i]))
+				p.i += quote_handler(ms->input + p.i, 0);
+			if (ft_strchr("|;><", ms->input[p.i]))
+			{
+				make_cmd(ms, p.j, &p.i, ms->input);
+				p.j = p.i + 1 + skip_while(ms->input + p.i + 1, ' ');
+			}
 		}
+		if (!p.ignore)
+			p.i++;
 	}
-
-	b += skip_while(ms->input + i, ' ');
-	if (ms->input[i - 1] != ';')
+	if (ms->input[p.j])
 	{
-		if (ms->input[b])
-		{
-			if (!(ms->tab = parse_split(ms->input + b, ' ', ms)))
-				errex(ms, SPLT_ERR);
-			new_cmd(ms, S_COLON, ms->tab);
-		}
-		else if (ms->cmds)
-				ms->cmds->is_err = STX_ERR;
-		else
-				ms->cmd_err = STX_ERR;
+		if (!(ms->tab = parse_split(ms->input + p.j, ' ', ms)))
+			errex(ms, SPLT_ERR);
+		new_cmd(ms, S_COLON, ms->tab);
 	}
-	ms->cmds = get_head(ms->cmds);
-	// puts("\nWE ARE OUT OF PARSING !");
-	// printf("PIPE_COUNT=|%d|\n", ms->pp_count);
+	ms->lst_end = ms->cmds;
+	ms->cmds = get_head(ms->cmds, &ms->cmd_err);
+	/* Debug */
 	print_cmds(ms->cmds);
+	// puts("\nOut of parser2");
 }

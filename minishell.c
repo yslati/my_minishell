@@ -15,6 +15,7 @@
 int		minishell(char **env, int step)
 {
 	t_ms	*ms;
+	int 	i;
 
 	ms = (t_ms*)malloc(sizeof(t_ms));
 	if (!step)
@@ -22,12 +23,35 @@ int		minishell(char **env, int step)
 	while (1)
 	{
 		ft_putstr_fd("\033[1;31m$minishell$~> \033[0m",1);
-		parse(ms);
-		//puts("1");
-		exec_command(ms);
-		//puts("2");
-		init(ms, 1, NULL);
-		//puts("3");
+		if (parse_total_cmds(ms))
+		{
+			ft_putstr_fd("minishell: syntax error\n", 1);
+			free_str_table(ms->cmd_tab, tb_len(ms->cmd_tab));
+			ms->cmd_tab = NULL;
+			init(ms, 1, NULL);
+			continue ;
+		}
+		if (ms->cmd_tab)
+		{
+			i = -1;
+			while(ms->cmd_tab[++i])
+			{
+				ms->input = ms->cmd_tab[i];
+				parse(ms);
+				if (ms->cmd_err || (ms->lst_end && !ms->lst_end->end))
+				{
+					// puts("parser2");
+					ft_putstr_fd("minishell: syntax error\n", 1);
+					free_str_table(ms->cmd_tab, tb_len(ms->cmd_tab));
+					ms->cmd_tab = NULL;
+					break ;
+				}
+				// puts("\nNow command");
+				exec_command(ms);
+				free_cmds(ms);
+			}
+		}
+		init(ms, 2, NULL);
 	}
 	return (1);
 }

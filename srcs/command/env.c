@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 18:25:14 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/23 11:45:43 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/26 11:07:57 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,10 @@ int			ft_env(t_ms *ms)
 		ft_print_env(ms->env);
 	else
 	{
-		ft_putstr_fd("env: ", 1);
-		ft_putstr_fd(ms->cmds->args[1], 1);
-		ft_putendl_fd(": No such file or directory", 1);
-		return (0);
+		ft_putstr_fd("env: ", 2);
+		ft_putstr_fd(ms->cmds->args[1], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		return (1);
 	}
-	return (1);
+	return (0);
 }

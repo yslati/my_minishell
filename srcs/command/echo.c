@@ -6,7 +6,7 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 11:11:49 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/21 10:14:57 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/27 10:16:22 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			check_n(char **args, int *i)
 	return (nflag);
 }
 
-void			ft_echo(t_ms *ms)
+int			ft_echo(t_ms *ms)
 {
 	int i;
 	int nflag;
@@ -41,7 +41,13 @@ void			ft_echo(t_ms *ms)
 		nflag = check_n(ms->cmds->args, &i);
 		while (ms->cmds->args[i])
 		{
-			ft_putstr_fd(ms->cmds->args[i], 1);
+			if (!ft_strcmp(ms->cmds->args[i], "$?"))
+			{
+				// printf("status: |%d|\n", ms->ret_status);
+				ft_putnbr_fd(ms->ret_status, 1);
+			}
+			else
+				ft_putstr_fd(ms->cmds->args[i], 1);
 			if (ms->cmds->args[i + 1])
 				ft_putchar_fd(' ', 1);
 			i++;
@@ -49,4 +55,5 @@ void			ft_echo(t_ms *ms)
 		if (!nflag)
 			ft_putchar_fd('\n', 1);
 	}
+	return (0);
 }

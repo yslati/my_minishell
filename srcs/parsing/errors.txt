@@ -1,2 +1,12 @@
+parsing:
+show a syntax error 
 
-/bin/ls : should work
+when command exit is sent you need to free all your parsing struct before performing exit command
+
+
+
+============================
+cmds: 
+
+echo Echo ECHO ECho EcHo ... : work exact same way
+CD Cd cD : doesn't work && doesn't display an error

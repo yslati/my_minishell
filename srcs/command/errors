@@ -1,1 +1,7 @@
-ls > out | wc > out
+malloc in export
+try lot of env then export
+
+echo $>
+
+status with ctrl+c && 
+

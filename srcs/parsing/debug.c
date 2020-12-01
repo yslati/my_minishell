@@ -6,11 +6,20 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 12:30:38 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/25 09:23:37 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/29 13:44:42 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+void	print_total_cmds(char **cmds_tab)
+{	
+	/* Debugging */
+	FILE *f;
+	f = fopen("/Users/yslati/Desktop/minishell_yo/debug", "w+");
+	print_tab(cmds_tab, "Cmds_Table", f);
+	fclose(f);
+	/* End_Debugging */
+}
 
 void		print_tab(char **tab, char *tab_name, FILE *f)
 {
@@ -31,9 +40,10 @@ void		print_tab(char **tab, char *tab_name, FILE *f)
 				fprintf(f, "\t%s[%d] = |%s|", tab_name, i, tab[i]);
 		}
 	}
-	else
-		printf("FILE DESCRIPTOR IS NULL\n");
+	//else
+	//	printf("FILE DESCRIPTOR IS NULL\n");
 }
+
 
 void		print_cmds(t_cmd *cmds)
 {
@@ -48,12 +58,12 @@ void		print_cmds(t_cmd *cmds)
 		{
 			fprintf(fd,"\n\n===================================\n\n==> CMD=|%s|\n", cmds->cmd);
 			print_tab(cmds->args, "CMD_ARGS", fd);
-			fprintf(fd, "\n\nStart=|%d|\tEnd=|%d|\tRedir=|%c|%d|\tErr=|%d|\tStatus=|%d|\n", 
-						cmds->start, cmds->end, cmds->redir, cmds->redir, cmds->is_err, cmds->is_status);
+			fprintf(fd, "\n\nStart=|%d|\tEnd=|%d|\tRedir=|%c|%d|\tErr=|%d|\n", 
+						cmds->start, cmds->end, cmds->redir, cmds->redir, cmds->is_err);
 			cmds = cmds->next;
 		}
 	}
-	else
-		printf("FILE DESCRIPTOR IS NULL\n");
+	//else
+	//	printf("FILE DESCRIPTOR IS NULL\n");
 	fclose(fd);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 16:01:34 by obouykou          #+#    #+#             */
-/*   Updated: 2020/06/08 16:01:34 by obouykou         ###   ########.fr       */
+/*   Created: 2020/11/29 12:46:10 by yslati            #+#    #+#             */
+/*   Updated: 2020/11/29 12:46:10 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int				is_set(char *target, char *set)
 {
-	int	i;
-	int j;
-	int	b;
+	int			i;
+	int			j;
+	int			b;
 
 	if (!target || !*target || !set)
 		return (0);
@@ -40,7 +40,8 @@ void			exit_analyse(t_ms *ms, int *b)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(ms->cmds->args[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);	
+		ft_putendl_fd(": numeric argument required", 2);
+		ms->ret_status = 1;
 	}
 	else if (is_set(ms->cmds->args[1], "0123456789"))
 	{
@@ -64,16 +65,17 @@ void			free_parsing_struct(t_ms *ms)
 
 int				ft_exit(t_ms *ms)
 {
-	int	b;
+	int			b;
 
 	ft_putendl_fd("exit", 1);
 	b = 1;
 	if (ms->cmds->args[1])
 		exit_analyse(ms, &b);
+	if (!b)
+		return (1);
 	if (ms->env)
 		free_str_table(ms->env, tb_len(ms->env));
 	b = ms->ret_status;
 	free_parsing_struct(ms);
-	exit(ms->ret_status);
-	return (0);
+	exit(b);
 }

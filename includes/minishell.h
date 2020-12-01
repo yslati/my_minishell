@@ -25,18 +25,25 @@
 # include "../libft/libft.h"
 
 # define SIZE		1638
+# define CONT		1
 # define TRUE		14
 # define APPEND		'a'
 # define TRUNC		'>'
 # define READ		'<'
 # define FLASE		0
+# define SUCCESS	0
 # define PIPE		124
 # define S_COLON	59
-# define STX_ERR	1
+# define VALID_STX	7
 # define RDIN_ERR	2
 # define SPLT_ERR	3
+# define STX_ERR			1
 # define F_NOT_FOUND_ERR	2
+# define NOT_VALID_ERR		3
 # define CMD_NOT_FOUND_ERR	4
+# define OLDPWD_ERR			5
+# define HOME_NOT_SET_ERR	6
+
 
 # define HELLO "\n\n======> SAFE <======\n\n"
 
@@ -47,7 +54,6 @@ typedef		struct	s_cmd
 	char			start;
 	char			end;
 	char			redir;
-	char			is_status;
 	char			is_err;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
@@ -55,13 +61,13 @@ typedef		struct	s_cmd
 
 typedef		struct	s_parser
 {
-	int		i;
-	int		j;
-	int		m;
-	int		ti;
-	int		ignore;
-	int		l;
-	char	*tmp;
+	int				i;
+	int				j;
+	int				m;
+	int				l;
+	char			quote_ig;
+	char			slash_ig;
+	char			*tmp;
 }					t_parser;
 
 typedef		struct	s_ms
@@ -69,6 +75,7 @@ typedef		struct	s_ms
 	char			*input;
 	char			*output;
 	pid_t			pid;
+	pid_t			*tpid;
 	char			err;
 	char			cmd_err;
 	t_cmd			*cmds;
@@ -96,7 +103,6 @@ char				**free_str_table(char **tab, int size);
 void				init(t_ms *ms, char step, char **env);
 int					parse_total_cmds(t_ms *ms);
 void				parse(t_ms *ms);
-int					char_counter(char *s, char c);
 char				**parse_split(char const *s, char c, t_ms *ms);
 void				errex(t_ms *ms, int ex);
 char				**dup_str_tab(char **arr);
@@ -105,10 +111,18 @@ t_cmd				*get_head(t_cmd *cmds, char *err);
 void				parse_d(t_ms *ms);
 void				new_cmd(t_ms *ms, char del, char **tab);
 int					quote_handler(char const *s, int neg);
+void				clean_stx_err(t_ms *ms);
+void				init_parser(t_parser *p);
+void				parse_read_rdr(t_ms *ms, int b, int i, char *s);
+void				parse_trunc_rdr(t_ms *ms, int b, int *i, char *s);
+void				parse_pipe(t_ms *ms, int b, int i, char *s);
+void				parse_scolon(t_ms *ms, int b, int i, char *s);
+char				*parse_quote_bslash(char *elem, t_ms *ms);
 void				free_cmds(t_ms *ms);
 // Debugging
 void				print_tab(char **tab, char *tab_name, FILE *fd);
 void				print_cmds(t_cmd *cmds);
+void				print_total_cmds(char **cmds_tab);
 
 /* Cmds */
 char				*ft_strcpy_pro(char *dst, const char *src, char c);
@@ -135,8 +149,12 @@ void				exec_command(t_ms *ms);
 int					is_builtin_sys(char *cmds);
 int 				valid_arg(char *arg);
 int					ft_error(t_ms *ms, int err);
-/*  */
+int					cmd_error(t_ms *ms, int err, char *cmd, char *arg);
+void				save_fds(int *fds);
+void				restore_fds(int *fds);
+void				ft_redir(t_ms *ms, t_cmd *tmp, t_cmd *cmd);
+void				handle_sig(int sig);
+/* main function */
 int					minishell(char **env, int step);
-
 
 #endif

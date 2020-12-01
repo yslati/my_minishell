@@ -6,23 +6,20 @@
 /*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 12:04:11 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/21 12:03:23 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/11/28 12:11:21 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int		char_counter(char *s, char c)
+int			skip_while(char *s, char c)
 {
-	int n;
-
-	if (!s)
-		return (0);
-	n = 0;
-	while (*s)
-		if (*s++ == c)
-			n++;
-	return (n);
+	int i;
+	
+	i = 0;
+	while (s[i] == c)
+		++i;
+	return (i);
 }
 
 int		tb_len(char **table)
@@ -55,7 +52,6 @@ char	**dup_str_tab(char **arr)
 	char	**tab;
 
 	l = tb_len(arr);
-	//printf("\nl=|%d|\n", l);
 	if (!(tab = (char **)malloc((l + 1) * sizeof(char *))))
 		return(NULL);
 	tab[l] = NULL;

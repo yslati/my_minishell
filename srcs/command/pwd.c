@@ -6,13 +6,13 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 11:03:38 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/14 10:49:38 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/28 14:58:32 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int			ft_pwd(t_ms *ms)
+int		ft_pwd(t_ms *ms)
 {
 	ms->pwd = getcwd(NULL, 0);
 	ft_putendl_fd(ms->pwd, 1);

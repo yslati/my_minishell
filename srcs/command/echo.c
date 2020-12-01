@@ -6,16 +6,15 @@
 /*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 11:11:49 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/27 10:16:22 by yslati           ###   ########.fr       */
+/*   Updated: 2020/11/29 14:00:34 by yslati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
 int			check_n(char **args, int *i)
 {
-	int nflag;
+	int		nflag;
 
 	nflag = 0;
 	while (!ft_strncmp(args[*i], "-n", 2))
@@ -28,12 +27,11 @@ int			check_n(char **args, int *i)
 
 int			ft_echo(t_ms *ms)
 {
-	int i;
-	int nflag;
+	int		i;
+	int		nflag;
 
 	i = 1;
 	nflag = 0;
-
 	if (!ms->cmds->args[i])
 		ft_putendl_fd("", 1);
 	else if (ms->cmds->args[i])
@@ -41,13 +39,7 @@ int			ft_echo(t_ms *ms)
 		nflag = check_n(ms->cmds->args, &i);
 		while (ms->cmds->args[i])
 		{
-			if (!ft_strcmp(ms->cmds->args[i], "$?"))
-			{
-				// printf("status: |%d|\n", ms->ret_status);
-				ft_putnbr_fd(ms->ret_status, 1);
-			}
-			else
-				ft_putstr_fd(ms->cmds->args[i], 1);
+			ft_putstr_fd(ms->cmds->args[i], 1);
 			if (ms->cmds->args[i + 1])
 				ft_putchar_fd(' ', 1);
 			i++;
@@ -55,5 +47,6 @@ int			ft_echo(t_ms *ms)
 		if (!nflag)
 			ft_putchar_fd('\n', 1);
 	}
+	ms->status = 0;
 	return (0);
 }

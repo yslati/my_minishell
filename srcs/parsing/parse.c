@@ -6,13 +6,13 @@
 /*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:21:10 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/28 20:56:39 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/12/02 13:39:31 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int		make_cmd(t_ms *ms, int b, int *i, char *s)
+int			make_cmd(t_ms *ms, int b, int *i, char *s)
 {
 	if (s[*i] == S_COLON)
 		parse_scolon(ms, b, *i, ms->input);
@@ -22,14 +22,12 @@ int		make_cmd(t_ms *ms, int b, int *i, char *s)
 		parse_trunc_rdr(ms, b, i, ms->input);
 	else if (s[*i] == READ)
 		parse_read_rdr(ms, b, *i, ms->input);
-	
 	if (ms->tab[0])
 	{
 		ms->cmd_err = ms->tab[0][0] == '\0';
 		new_cmd(ms, s[*i], ms->tab);
 	}
-	free_str_table(ms->tab, tb_len(ms->tab));
-	ms->tab = NULL;
+	ms->tab = free_str_table(ms->tab);
 	ms->redir = 0;
 	ms->cmd_err = 0;
 	return (*i + 1);
@@ -48,8 +46,9 @@ t_cmd		*get_head(t_cmd *cmds, char *err)
 	return (cmds);
 }
 
-void	make_cmds_lst(t_ms *ms, t_parser *p)
+void		make_cmds_lst(t_ms *ms, t_parser *p)
 {
+	init_parser(p);
 	while (ms->input[p->i])
 	{
 		if (p->slash_ig)
@@ -66,9 +65,8 @@ void	make_cmds_lst(t_ms *ms, t_parser *p)
 				make_cmd(ms, p->j, &p->i, ms->input);
 				p->j = p->i + 1 + skip_while(ms->input + p->i + 1, ' ');
 			}
-		}
-		if (!p->slash_ig)
 			p->i++;
+		}
 	}
 }
 
@@ -84,12 +82,12 @@ void		parse(t_ms *ms)
 	t_parser p;
 
 	parse_d(ms);
-	init_parser(&p);
 	make_cmds_lst(ms, &p);
 	if (ms->input[p.j])
 		make_last_cmd(ms, &p);
 	ms->lst_end = ms->cmds;
-	ms->cmds = get_head(ms->cmds, &ms->cmd_err);
+	ms->head = get_head(ms->cmds, &ms->cmd_err);
+	ms->cmds = ms->head;
 	/* Debug */
 	print_cmds(ms->cmds);
 }

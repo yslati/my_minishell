@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_fds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:45 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/30 12:37:51 by yslati           ###   ########.fr       */
+/*   Updated: 2020/12/02 15:02:35 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void			ft_redir(t_ms *ms, t_cmd *tmp, t_cmd *cmd)
 			i = 1;
 			if (tb_len(tmp->next->args) > 1 && !tmp->next->start)
 				while (tmp->next->args[i])
-					cmd->args = get_arr(tmp->next->args[i++], cmd->args);
+					cmd->args = get_arr(tmp->next->args[i++], &cmd->args);
 			fd_in = open_file(tmp);
 		}
 		else if (tmp->redir == READ)

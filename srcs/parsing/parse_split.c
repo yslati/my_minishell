@@ -6,7 +6,7 @@
 /*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 12:58:28 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/28 14:58:04 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/12/02 12:09:04 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char	**parse_split(char const *s, char c, t_ms *ms)
 		while (*s && *s == c)
 			s++;
 		if (!(tab[j] = (char *)malloc((ft_len_elem(s, c) + 1) * sizeof(char))))
-			return (free_str_table(tab, l));
+			return (free_str_table(tab));
 		s = fill_elem(&tab[j++], (char *)s, c, ms);
 	}
 	return (tab);

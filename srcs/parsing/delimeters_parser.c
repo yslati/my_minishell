@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   del_parser.c                                       :+:      :+:    :+:   */
+/*   delimeters_parser.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/28 20:53:49 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/28 20:55:03 by obouykou         ###   ########.fr       */
+/*   Updated: 2020/12/02 13:33:58 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void		new_cmd(t_ms *ms, char del, char **tab)
 	else
 		c->start = 1;
 	c->end = (del == S_COLON) ? 1 : 0;
+	c->is_err = ms->cmd_err != 0;
 	if (ms->cmds)
 		ms->cmds->next = c;
 	c->prev = ms->cmds;
-	c->is_err = ms->cmd_err != 0;
 	ms->cmds = c;
 }

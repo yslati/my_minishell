@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 18:25:14 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/30 13:10:46 by yslati           ###   ########.fr       */
+/*   Updated: 2020/12/03 11:42:27 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,58 +15,59 @@
 int			get_env(char **env, char *var)
 {
 	int		i;
+	int		l;
 	char	*search;
 
-	search = (char *)malloc(sizeof(char) * (ft_strlen(var) + 2));
-	i = 0;
+	l = ft_strlen(var) + 1;
+	search = (char *)malloc(sizeof(char) * (l + 1));
 	search = ft_strcpy(search, var);
+	var = ft_free(var);
 	search = ft_strcat(search, "=");
-	while (env && env[i++])
-		if (!(ft_strncmp(env[i], search, ft_strlen(search))))
-		{
-			free(search);
-			return (i);
-		}
-	free(search);
+	i = -1;
+	if (env)
+		while (env[++i])
+			if (!(ft_strncmp(env[i], search, l)))
+			{
+				search = ft_free(search);
+				return (i);
+			}
+	search = ft_free(search);
 	return (-1);
 }
 
-char		**get_arr(char *value, char **env)
+char		**get_arr(char *value, char ***env)
 {
 	char	**arr;
 	int		i;
 
-	i = tb_len(env) + 2;
+	i = tb_len(*env) + 2;
 	if (!(arr = (char **)malloc(sizeof(char *) * i)))
 		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		arr[i] = (char *)malloc(sizeof(char) * (ft_strlen(env[i]) + 1));
-		arr[i] = env[i];
-		i++;
-	}
-	arr[i] = value;
+	i = -1;
+	while (env[0][++i])
+		arr[i] = ft_strdup(env[0][i]);
+	arr[i] = ft_strdup(value);
 	arr[i + 1] = NULL;
+	*env = free_str_table(*env);
 	return (arr);
 }
 
-char		**add_to_arr(char *value, char **env)
+char		**add_to_arr(char *value, char ***env)
 {
 	char	**new_arr;
 
-	if (env == NULL)
+	if (*env == NULL)
 	{
 		new_arr = (char **)malloc(sizeof(char *) * 2);
-		new_arr[0] = value;
+		new_arr[0] = ft_strdup(value);
 		new_arr[1] = NULL;
+		return (new_arr);
 	}
 	else
 		return (get_arr(value, env));
-	return (new_arr);
 }
 
-char		**set_env(char *var, char *value, char **env)
+char		**set_env(char *var, char *value, char ***env)
 {
 	int		i;
 	size_t	len;
@@ -79,14 +80,14 @@ char		**set_env(char *var, char *value, char **env)
 	line = ft_strcpy(line, var);
 	line = ft_strcat(line, "=");
 	line = ft_strcat(line, value);
-	if ((i = get_env(env, var)) != -1)
+	if ((i = get_env(*env, var)) != -1)
 	{
-		(env[i]) ? free(env[i]) : 0;
-		env[i] = line;
+		free(env[0][i]);
+		env[0][i] = line;
 	}
 	else
 		return (add_to_arr(line, env));
-	return (env);
+	return (*env);
 }
 
 int			ft_env(t_ms *ms)

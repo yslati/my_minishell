@@ -6,7 +6,7 @@
 #    By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/20 12:40:11 by obouykou          #+#    #+#              #
-#    Updated: 2020/11/12 11:48:31 by obouykou         ###   ########.fr        #
+#    Updated: 2020/12/01 11:24:22 by obouykou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,13 @@ FLAGS = -Wextra -Werror -Wall
 all: $(NAME)
 
 $(NAME): $(OBJECT) $(HEADER)
-	@ar rc $(NAME) $(OBJECT)
-	@ranlib $(NAME)
+	@ar -rcs $(NAME) $(OBJECT)
 
 %.o:%.c	$(HEADER)					
-	@gcc -c $< $(FLAGS)
+	@gcc -c $< $(FLAGS) -o $@
 
 clean:
-	@rm -rf *.o
+	@rm -rf $(OBJECT)
 
 fclean: clean
 	@rm -rf $(NAME)

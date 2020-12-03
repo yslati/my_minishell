@@ -40,8 +40,8 @@ void			exit_analyse(t_ms *ms, int *b)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(ms->cmds->args[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);
-		ms->ret_status = 1;
+		ft_putstr_fd(": numeric argument required\n", 2);
+		ms->ret_status = 255;
 	}
 	else if (is_set(ms->cmds->args[1], "0123456789"))
 	{
@@ -57,9 +57,14 @@ void			exit_analyse(t_ms *ms, int *b)
 
 void			free_parsing_struct(t_ms *ms)
 {
-	free_str_table(ms->tab, tb_len(ms->tab));
-	free_str_table(ms->cmd_tab, tb_len(ms->cmd_tab));
+	ms->env = free_str_table(ms->env);
+	ms->tab = free_str_table(ms->tab);
+	ms->cmd_tab = free_str_table(ms->cmd_tab);
 	free_cmds(ms);
+	free(ms->pwd);
+	free(ms->old_pwd);
+	if (ms->ctrl == CTRL_D)
+		free(ms->input);
 	free(ms);
 }
 
@@ -68,13 +73,14 @@ int				ft_exit(t_ms *ms)
 	int			b;
 
 	ft_putendl_fd("exit", 1);
-	b = 1;
-	if (ms->cmds->args[1])
-		exit_analyse(ms, &b);
-	if (!b)
-		return (1);
-	if (ms->env)
-		free_str_table(ms->env, tb_len(ms->env));
+	if (!ms->ctrl)
+	{	
+		b = 1;
+		if (ms->cmds->args[1])
+			exit_analyse(ms, &b);
+		if (!b && (ms->status = 1))
+			return (1);
+	}
 	b = ms->ret_status;
 	free_parsing_struct(ms);
 	exit(b);

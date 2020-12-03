@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_total_cmds.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:21:10 by obouykou          #+#    #+#             */
-/*   Updated: 2020/11/30 14:44:39 by yslati           ###   ########.fr       */
+/*   Updated: 2020/12/02 11:33:52 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,21 @@
 void		get_input(t_ms *ms)
 {
 	int i;
+	int l;
 
-	if ((i = read(0, ms->input, SIZE)) < 0)
+	if ((i = get_next_line(0, &ms->input)) < 0)
 	{
 		ms->err = RDIN_ERR;
 		errex(ms, 0);
 	}
-	if (i == 0)
+	if ((l = ft_strlen(ms->input)) != 0)
+		ms->input[l - 1] = '\0';
+	if (i == 0 && !l)
 	{
-		ft_putendl_fd("exit", 1);
-		exit(0);
+		ms->ret_status = 0;
+		ms->ctrl = CTRL_D;
+		ft_exit(ms);
 	}
-	ms->input[i - 1] = '\0';
 }
 
 int		sm_finder(char *input, t_parser *p)
@@ -122,6 +125,6 @@ int		parse_total_cmds(t_ms *ms)
 	free(ms->input);
 	ms->input = NULL;
 	/* Debug */
-	print_total_cmds(ms->cmd_tab);
+	print_total_cmds(ms->cmd_tab, "w+");
 	return (0);
 }

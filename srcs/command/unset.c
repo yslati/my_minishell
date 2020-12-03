@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yslati <yslati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obouykou <obouykou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/27 14:04:34 by yslati            #+#    #+#             */
-/*   Updated: 2020/11/30 12:58:11 by yslati           ###   ########.fr       */
+/*   Updated: 2020/12/03 12:47:16 by obouykou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,19 @@ int			cmp_get_pos(char **env, char *var)
 {
 	int		i;
 	char	*tmp;
+	char	*pos;
 
+	if ((pos = ft_strchr(var, '=')))
+		tmp = ft_strldup(var, pos - var);
+	else
+		tmp = ft_strdup(var);
 	i = -1;
-	tmp = ft_strdup(var);
-	if (ft_strchr(var, '='))
-		tmp = ft_strcpy_pro(tmp, var, '=');
 	while (env[++i])
 		if ((!ft_strcmp(env[i], tmp)))
+		{
+			tmp = ft_free(tmp);
 			return (i);
+		}
 	return (get_env(env, tmp));
 }
 
@@ -31,9 +36,12 @@ int			check_exist(char **env, char *arg)
 {
 	int		i;
 	char	*wanted;
+	char	*pos;
 
-	wanted = ft_strdup("");
-	wanted = ft_strcpy_pro(wanted, arg, '=');
+	if ((pos = ft_strchr(arg, '=')))
+		wanted = ft_strldup(arg, pos - arg);
+	else
+		wanted = ft_strdup(arg);
 	if (((i = get_env(env, wanted)) != -1))
 		return (i);
 	return (-1);
@@ -47,17 +55,15 @@ char		**rm_arr(char **env, int pos)
 	int		len;
 
 	i = 0;
-	j = 0;
+	j = -1;
 	len = tb_len(env) - 1;
-	if (!(arr = (char **)malloc(sizeof(char **) * len + 1)))
+	if (!(arr = (char **)malloc(sizeof(char *) * (len + 1))))
 		return (NULL);
 	while (i < len)
-	{
-		if (j != pos)
+		if (++j != pos)
 			arr[i++] = ft_strdup(env[j]);
-		j++;
-	}
 	arr[i] = NULL;
+	free_str_table(env);
 	return (arr);
 }
 
